@@ -247,6 +247,8 @@ static void mqtt_event_handler(void *handler_args, esp_event_base_t base, int32_
             // // also expect replied from broadcast topic 050525
             // strcpy(expected_topic1, BroadcastTopic);
             // if command also removed
+                    if(UartDebugInfo)
+                        uart_write_string(data);
                     strcpy(InputVia,"MQTT");
                     AnalyzeInputPkt(data,InputVia);
         } else {
@@ -338,33 +340,35 @@ void hbt_monitor_task(void)
 
 // removed on 030925. It is there just do nothing
 // or remove sendTCResponse from all call points
+// added back on 100925
 
-// void SendTCResponse (void)
-// {
-//     return; // 030925
-//     if(MQTT_CONNEECTED && connected_to_wifi )
-//     {
+void SendTCResponse (void)
+{
+    if(MQTT_CONNEECTED && connected_to_wifi )
+    {
        
-//         char payload[200];
-//         char InputTC[200];
-//         if  (MQTTRequired)
-//         {
-//             // added on 090525
-//             sprintf(payload, "*TC-D,%s,%d,%d,%d,%d,%d,%d,%d#", 
-//             UniqueTimeStamp,CashTotals[0],CashTotals[1],CashTotals[2],CashTotals[3],CashTotals[4],CashTotals[5],CashTotals[6]);
-//             mqtt_publish_msg(payload);
+        char payload[200];
+        char InputTC[200];
+        if  (MQTTRequired)
+        {
+            // added on 090525
+            sprintf(payload, "*TC-D,%s,%d,%d,%d,%d,%d,%d,%d#", 
+            UniqueTimeStamp,CashTotals[0],CashTotals[1],CashTotals[2],CashTotals[3],CashTotals[4],CashTotals[5],CashTotals[6]);
+            mqtt_publish_msg(payload);
+            ESP_LOGI(TAG,"%s","MQTT TC_D SENT");
             
-//         }
-//         if  (TCPRequired)
-//         {
-//             // added on 090525
-//             sprintf(payload, "*TC-D,%s,%d,%d,%d,%d,%d,%d,%d#", 
-//             UniqueTimeStamp,CashTotals[0],CashTotals[1],CashTotals[2],CashTotals[3],CashTotals[4],CashTotals[5],CashTotals[6]);
-//             sendSocketData(sock, payload, strlen(payload), 0);
-//         }        
-//     }
+        }
+        if  (TCPRequired)
+        {
+            // added on 090525
+            sprintf(payload, "*TC-D,%s,%d,%d,%d,%d,%d,%d,%d#", 
+            UniqueTimeStamp,CashTotals[0],CashTotals[1],CashTotals[2],CashTotals[3],CashTotals[4],CashTotals[5],CashTotals[6]);
+            sendSocketData(sock, payload, strlen(payload), 0);
+            ESP_LOGI(TAG,"%s","TCP TC_D SENT");
+        }        
+    }
 
-// }
+}
 
 // void SendTCcommand(void){
 //     while(1)

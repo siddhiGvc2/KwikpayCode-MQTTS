@@ -210,7 +210,7 @@ typedef enum TCPIP_SOCKET_STATE{
 
 #define PASS_THRU   "Y"
 
-#define FWVersion "*Kwikpay_040925_VER_1.24 Naico Ltd#"
+#define FWVersion "*Kwikpay_100925_VER_1.24X Naico Ltd#"
 
 
 

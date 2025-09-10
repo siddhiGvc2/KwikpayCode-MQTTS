@@ -402,7 +402,8 @@ void gpio_read_n_act(void)
                         sprintf(payload, "*RP,%d,%d#",LastInputPin,TotalPulses); 
                         sendSocketData(sock, payload, strlen(payload), 0);
                         mqtt_publish_msg(payload);
-                        //SendTCResponse(); // 030925
+                        //
+                        SendTCResponse(); // 030925 added back on 100925
                    }
                    // create same pules on same output pin 17-06-24
                    // provided this is not hardware test mode
@@ -424,7 +425,7 @@ void gpio_read_n_act(void)
                    if (HardwareTestMode == 0)
                    {
                     mqtt_publish_msg(payload);
-                    // SendTCResponse(); // 030925
+                    SendTCResponse(); // 030925 added back on 100925
                     if(UartDebugInfo)
                         uart_write_string(payload);
                     ESP_LOGI(TAG,"*RP,%d,%d,%d#",LastInputPin,TotalPulses,InputPin);

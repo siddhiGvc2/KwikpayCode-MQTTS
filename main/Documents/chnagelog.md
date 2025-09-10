@@ -66,3 +66,11 @@ FW- *Kwikpay_040925_VER_1.24C Naico Ltd#
 
 
 -- TC-D remove
+
+## 1.24X
+-- all MQTT commands should go to UART
+-- change in mqttRoutines.c
+
+-- 100925
+-- added TC_D when coin added
+-- do not send TC-D regularly in loop
