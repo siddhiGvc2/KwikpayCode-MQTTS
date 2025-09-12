@@ -52,17 +52,21 @@ void InitMqtt (void);
 
 
  esp_mqtt_client_handle_t client = NULL;
+ 
 
  
 void RetryMqtt(void)
 {
     while(1)
     {
-    if (MQTT_CONNEECTED == 0 && connected_to_wifi && MQTTRequired)
+    // 120925 by VC    
+    if (MQTT_CONNEECTED == 0 && connected_to_wifi && MQTTRequired && (FirstTryMQTT == 1))
+//    if (MQTT_CONNEECTED == 0 && connected_to_wifi && MQTTRequired )
     {
       mqtt_app_start();
+      vTaskDelay(15000/portTICK_PERIOD_MS); // wait for 15 second before restarting mqtt 120925 by VC
     }
-    vTaskDelay(3000/portTICK_PERIOD_MS);
+    vTaskDelay(1000/portTICK_PERIOD_MS);
    }
 
 }
@@ -141,9 +145,11 @@ static void mqtt_event_handler(void *handler_args, esp_event_base_t base, int32_
     switch ((esp_mqtt_event_id_t)event_id)
     {
     case MQTT_EVENT_CONNECTED:
+        vTaskDelay(pdMS_TO_TICKS(4000)); // 120925 by VC
         ESP_LOGI(TAG, "MQTT_EVENT_CONNECTED");
         if(UartDebugInfo)
           uart_write_string_ln("MQTT_EVENT_CONNECTED");
+
         MQTT_CONNEECTED = 1;  // Ensure MQTT_CONNECTED is defined
         
       
@@ -191,7 +197,7 @@ static void mqtt_event_handler(void *handler_args, esp_event_base_t base, int32_
         strcpy (topic,BroadcastTopic);
         if(UartDebugInfo)
             uart_write_string_ln(payload);
-        mqtt_publish_msg(payload);
+       // mqtt_publish_msg(payload);   // 120925 by VC
         
         msg_id = esp_mqtt_client_subscribe(client, topic, QOS);
         ESP_LOGI(TAG, "sent subscribe successful, msg_id=%d", msg_id);
@@ -259,6 +265,7 @@ static void mqtt_event_handler(void *handler_args, esp_event_base_t base, int32_
     case MQTT_EVENT_ERROR:
         if (connected_to_wifi)
         {
+        // FirstTryMQTT = 1; // 120925 by VC
         ESP_LOGI(TAG, "MQTT_EVENT_ERROR");
         if(UartDebugInfo)
            uart_write_string_ln( "MQTT_EVENT_ERROR");
@@ -274,14 +281,15 @@ static void mqtt_event_handler(void *handler_args, esp_event_base_t base, int32_
 
 void mqtt_app_start(void)
 {
+    FirstTryMQTT = 0;  //added on 120925
     ESP_LOGI(TAG, "STARTING MQTT");
     if(UartDebugInfo)
-      uart_write_string_ln("STARTING MQTT");
+      uart_write_string_ln("**********STARTING MQTT***********");
     esp_mqtt_client_config_t mqttConfig = {
          .broker.address.uri = mqtt_uri,
          .task.stack_size = 1024*10, 
         .session.protocol_ver = MQTT_PROTOCOL_V_3_1_1,
-        .network.disable_auto_reconnect = false,
+        // .network.disable_auto_reconnect = false, // changed from false to true  on 120925
         .credentials.username = mqtt_user,
         .credentials.authentication.password = mqtt_pass,
         .session.last_will.topic = "GVC/VM/00002",
@@ -293,11 +301,23 @@ void mqtt_app_start(void)
     client = esp_mqtt_client_init(&mqttConfig);
     esp_mqtt_client_register_event(client, ESP_EVENT_ANY_ID, mqtt_event_handler, client);
     esp_mqtt_client_start(client);
-    if(FirstTryMQTT== 1)
-    {
-    InitMqtt();
-    }
+   
+   
+    
 }
+
+//added on 120925
+void mqtt_app_stop(void){
+    if (client != NULL)
+{
+    
+    esp_mqtt_client_stop(client);
+    ESP_LOGI(TAG, "MQTT stopped because WiFi is down");
+    FirstTryMQTT=1;
+}
+}
+
+
 
 
 
@@ -306,7 +326,7 @@ void mqtt_app_start(void)
 void InitMqtt (void)
 {
      xTaskCreate(Publisher_Task, "Publisher_Task", 1024 * 8, NULL, 5, NULL);
-     FirstTryMQTT = 0;
+   
      ESP_LOGI(TAG,"MQTT Initiated");
 }
 
@@ -355,6 +375,7 @@ void SendTCResponse (void)
             sprintf(payload, "*TC-D,%s,%d,%d,%d,%d,%d,%d,%d#", 
             UniqueTimeStamp,CashTotals[0],CashTotals[1],CashTotals[2],CashTotals[3],CashTotals[4],CashTotals[5],CashTotals[6]);
             mqtt_publish_msg(payload);
+            uart_write_string_ln(payload);
             ESP_LOGI(TAG,"%s","MQTT TC_D SENT");
             
         }
@@ -365,6 +386,7 @@ void SendTCResponse (void)
             UniqueTimeStamp,CashTotals[0],CashTotals[1],CashTotals[2],CashTotals[3],CashTotals[4],CashTotals[5],CashTotals[6]);
             sendSocketData(sock, payload, strlen(payload), 0);
             ESP_LOGI(TAG,"%s","TCP TC_D SENT");
+            uart_write_string_ln(payload);
         }        
     }
 

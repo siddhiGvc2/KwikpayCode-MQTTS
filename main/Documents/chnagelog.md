@@ -74,3 +74,9 @@ FW- *Kwikpay_040925_VER_1.24C Naico Ltd#
 -- 100925
 -- added TC_D when coin added
 -- do not send TC-D regularly in loop
+
+-- 120925 Changes done b siddhi
+-- InitMqtt() called from main.c file
+-- network.disabled_auto_reconnect set true line removed
+-- called mqtt_app_start frm when wifi cnnected using FirstTryMqtt variable.
+-- mqtt_app_stop() function created & called before mqtt_app_start().

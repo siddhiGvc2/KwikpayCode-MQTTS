@@ -73,6 +73,7 @@ extern uint32_t millis(void);
 // void
 extern void InitMqtt (void);
 extern void mqtt_app_start(void);
+extern void mqtt_app_stop(void);
 extern void mqtt_publish_msg(const char *);
 extern void RetryMqtt(void);
 extern void SendTCcommand(void);
@@ -94,3 +95,4 @@ extern void NetworkConnect(void);
 
 extern int sendSocketData (int  , const char*  , int, int );
 extern void SendTCResponse (void);
+

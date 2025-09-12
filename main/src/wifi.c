@@ -146,6 +146,8 @@ void event_handler(void* arg, esp_event_base_t event_base,
             set_led_state(SEARCH_FOR_WIFI2);
         if (WiFiNumber == 3)
             set_led_state(SEARCH_FOR_WIFI3);
+        uart_write_string_ln("*SEARCHING WIFI#"); 
+        mqtt_app_stop(); // added on 120925
         ESP_LOGI(TAG,"*Connect WiFi after disconnection#");
         vTaskDelay(ESP_RETRY_GAP);
         if (s_retry_num <= ESP_MAXIMUM_RETRY) {
@@ -193,9 +195,15 @@ void event_handler(void* arg, esp_event_base_t event_base,
              
         if (MQTTRequired)
         {
-              if(UartDebugInfo)
+            if(UartDebugInfo)
                 uart_write_string_ln("MQTT STARTED");
-              mqtt_app_start();  // connect to MQTT when IP received
+                // removed by VC on 150925
+            mqtt_app_stop(); //added on 120925
+            if(FirstTryMQTT == 1)   // added on 120925
+            {
+              
+                mqtt_app_start();  // connect to MQTT when IP received
+            }
                 
         }
 

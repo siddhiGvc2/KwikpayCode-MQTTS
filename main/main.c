@@ -80,7 +80,10 @@ void app_main(void)
     status_leds_init();
     console_uart_init();
     if(UartDebugInfo)
-       uart_write_string(FWVersion);
+    {
+        uart_write_string_ln("******************* RESTARTING ESP-IDF ********************");
+        uart_write_string_ln(FWVersion);
+    }
     read_mac_address();
     xTaskCreate(tcpip_client_task, "tcpip_client_task", 1024 * 10, NULL, 12, NULL);
     load_settings_nvs();
@@ -112,6 +115,7 @@ void app_main(void)
     
     xTaskCreate(sendHBT, "sendHBT", 4096, NULL, 6, NULL);
     xTaskCreate(BlinkLED, "BlinkLED", 2048, NULL, 6, NULL);
+     InitMqtt(); // added on 120925
     // removed on 10-05-25
     // xTaskCreate(RetryMqtt, "RetryMqtt", 2048, NULL, 6, NULL);
   

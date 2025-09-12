@@ -89,7 +89,10 @@ void AnalyzeInputPkt(const char *rx_buffer,const char *InputVia)
     LED4TCPPacket = 1;
     ticks_100 = 0;
 
-if(strcmp(InputVia,"TCP")==0)
+    sprintf(payload,"*%s-%s#",InputVia,rx_buffer);
+    uart_write_string_ln(payload);
+
+    if(strcmp(InputVia,"TCP")==0)
     {
         if(MQTTRequired)
         {
