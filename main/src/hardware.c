@@ -184,7 +184,7 @@ void gpio_read_n_act(void)
     int TimeToBlinkLed = 0;
     uint32_t StartTime = 0;
     uint32_t StopTime = 0;
-    uint16_t CurrentWidth;
+    int CurrentWidth;
     uint16_t ChangeValue = 0;
     uint16_t CurrentValueOfChangeValue = 0;
     uint8_t i;
@@ -480,8 +480,9 @@ void gpio_read_n_act(void)
                          CurrentWidth = StopTime - StartTime;   
 //                         sprintf(payload,"Width %lu, ChangeValue %d , InputPin %d",CurrentWidth,ChangeValue,InputPin);
                          sprintf(payload," Current Width %d ChangeValue %d , InputPin %d",CurrentWidth,ChangeValue,InputPin);
-                         //uart_write_string_ln(payload);
-                         if ((CurrentWidth > 20) && (CurrentWidth <250)) 
+                         uart_write_string_ln(payload);
+                         ESP_LOGI(TAG," Current Width %d ChangeValue %d , InputPin %d",CurrentWidth,ChangeValue,InputPin);
+                         if ((CurrentWidth > MinKeyPressTime) && (CurrentWidth <MaxKeyPressTime)) 
                          {
                             
                             PinPressed = 0;
@@ -679,8 +680,8 @@ void GeneratePulsesInBackGround (void)
             {
                 if (HardwareTestMode == 0)
                 {
-                    ESP_LOGI("GenPulse","*Generate Pulses %d on Pin %d, gap %d# ",pulses/2,pin,pulseWitdh/(int)portTICK_PERIOD_MS);
-                    sprintf(buffer,"*Generate Pulses %d on Pin %d, gap %d#",pulses/2,pin,pulseWitdh/(int)portTICK_PERIOD_MS);
+                    ESP_LOGI("GenPulse","*Generate Pulses %d on Pin %d, gap %d# ",pulses/2,pin,pulseWitdh);
+                    sprintf(buffer,"*Generate Pulses %d on Pin %d, gap %d#",pulses/2,pin,pulseWitdh);
                     if(UartDebugInfo)
                       uart_write_string_ln(buffer);
                 }

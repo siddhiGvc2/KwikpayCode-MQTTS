@@ -598,6 +598,23 @@ void load_settings_nvs(){
         ESP_LOGI(TAG, "Default CA Values %d - %d", pulseWitdh,SignalPolarity);
     }
 
-
-
+    
+    if(utils_nvs_get_int( NVS_MINTIME_KEY, &MinKeyPressTime) == ESP_OK){
+      ESP_LOGI(TAG, "MT MIN Values %d", MinKeyPressTime);
+    }
+    else
+    {
+      MinKeyPressTime = 25;
+      ESP_LOGI(TAG, "MT MIN Values %d", MinKeyPressTime);
+    }
+  
+    if(utils_nvs_get_int( NVS_MAXTIME_KEY, &MaxKeyPressTime) == ESP_OK){
+      ESP_LOGI(TAG, "MT MAX Values %d", MaxKeyPressTime);
+    }
+    else
+    {
+      MaxKeyPressTime = 200;
+      ESP_LOGI(TAG, "MT MAX Values %d", MaxKeyPressTime);
+    }
+  
 }

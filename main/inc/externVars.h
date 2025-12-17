@@ -67,6 +67,10 @@ extern char SIPuserName[100];
 extern char MIPdateTime[100];
 extern char MIPuserName[100];
 
+extern char MTdateTime[100];
+extern char MTuserName[100];
+
+
 extern char CAdateTime[100];
 extern char CAuserName[100];
 
@@ -226,3 +230,5 @@ extern bool UartDebugInfo;
 extern int EnabledChannel[NUM_CHANNELS];
 extern int16_t chValue;
 
+// 161225
+extern int MaxKeyPressTime,MinKeyPressTime;

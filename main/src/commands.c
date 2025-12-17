@@ -113,6 +113,13 @@ void AnalyzeInputPkt(const char *rx_buffer,const char *InputVia)
         }
     }
 
+   if(strncmp(rx_buffer, "*MAXTIME?#", 5) == 0){
+        sprintf(payload,"*MAXTIME-OK,%s,%s,%d,%d#",MTuserName,MTdateTime,MinKeyPressTime,MaxKeyPressTime);
+        SendResponse(payload,InputVia);
+        tx_event_pending = 1;
+    }
+
+
     if(strncmp(rx_buffer, "*CA?#", 5) == 0){
         sprintf(payload,"*CA-OK,%s,%s,%d,%d#",CAuserName,CAdateTime,pulseWitdh,SignalPolarity);
         SendResponse(payload,InputVia);
@@ -482,6 +489,58 @@ void AnalyzeInputPkt(const char *rx_buffer,const char *InputVia)
        Out4094(0x00);
        utils_nvs_set_int(NVS_CA_KEY, numValue*2+polarity);
     }
+   
+        else if(strncmp(rx_buffer, "*MAXTIME:", 9) == 0){
+        if(strcmp(InputVia, "TCP") == 0 || strcmp(InputVia, "MQTT") == 0)
+        {
+            char tempUserName[64], tempDateTime[64], tempBuf[64],tempBuf2[64];
+            if (sscanf(rx_buffer, "*MAXTIME:%[^:]:%[^:]:%[^:]:%[^:#]#", tempUserName, tempDateTime, tempBuf,tempBuf2) == 4) {
+                // Check if any of the parsed values are empty
+                if (strlen(tempUserName) == 0 || strlen(tempDateTime) == 0 || strlen(tempBuf) == 0 || strlen(tempBuf2) == 0) {
+                    // Send error message if any required parameters are missing or invalid
+                    const char* errorMsg = "*Error: Missing or invalid parameters#";
+                    SendResponse(errorMsg,InputVia);
+                }
+                else{
+                    strcpy(MTuserName, tempUserName);
+                    strcpy(MTdateTime, tempDateTime);
+                    MinKeyPressTime = atoi(tempBuf);
+                    MaxKeyPressTime = atoi(tempBuf2);
+                }
+            }
+            else {
+                // Send error message if parsing failed
+                const char* errorMsg = "*Error: Invalid format#";
+                SendResponse(errorMsg,InputVia);
+            }
+        }
+        else if(strcmp(InputVia, "UART") == 0)
+        {
+            sscanf(rx_buffer, "*MAXTIME:%d:%d#",&MinKeyPressTime,&MaxKeyPressTime);
+            strcpy(MTuserName,"LOCAL");
+            strcpy(MTdateTime,"00/00/00"); 
+        }
+       
+      
+     
+       sprintf(payload, "*MAXTIME-OK,%s,%s,%d,%d#",MTuserName,MTdateTime,MinKeyPressTime,MaxKeyPressTime);
+       utils_nvs_set_str(NVS_MT_USERNAME, MTuserName);
+       utils_nvs_set_str(NVS_MT_DATETIME, MTdateTime);
+       ESP_LOGI(InputVia,"MT Values Saved %s,%s",MTuserName,MTdateTime);
+       SendResponse(payload,InputVia);
+       // valid values are between 25 and 100
+       if (MinKeyPressTime<25)
+           MinKeyPressTime = 25;
+       if (MaxKeyPressTime>1000)
+           MaxKeyPressTime = 1000;
+
+       tx_event_pending = 1;
+       utils_nvs_set_int(NVS_MINTIME_KEY, MinKeyPressTime);
+       utils_nvs_set_int(NVS_MAXTIME_KEY, MaxKeyPressTime);
+    }
+
+
+   
     else if(strncmp(rx_buffer, "*SS:", 4) == 0){
         if(strcmp(InputVia, "TCP") == 0 || strcmp(InputVia, "MQTT") == 0)
         {

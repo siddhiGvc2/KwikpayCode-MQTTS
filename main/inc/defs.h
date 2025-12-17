@@ -54,6 +54,10 @@ typedef enum TCPIP_SOCKET_STATE{
 #define NVS_SERVER_PORT_KEY_JUMPER "JUMPERPORT" 
 #define NVS_OTA_URL_KEY   "OTA_URL"
 #define NVS_CA_KEY          "CA"
+
+#define NVS_MINTIME_KEY   "MINTIME"
+#define NVS_MAXTIME_KEY   "MAXTIME"
+
 #define NVS_CASHTOTAL_KEY   "CASHTOTAL"
 #define NVS_VENDTOTAL_KEY   "VENDTOTAL"
 #define NVS_CASH1_KEY   "CASH1"
@@ -85,6 +89,9 @@ typedef enum TCPIP_SOCKET_STATE{
 
 #define NVS_CA_USERNAME     "USERNAME_CA"
 #define NVS_CA_DATETIME   "DATETIME_CA"
+
+#define NVS_MT_USERNAME     "USERNAME_MT"
+#define NVS_MT_DATETIME   "DATETIME_MT"
 
 #define NVS_CC_USERNAME     "USERNAME_CC"
 #define NVS_CC_DATETIME   "DATETIME_CC"
@@ -210,7 +217,7 @@ typedef enum TCPIP_SOCKET_STATE{
 
 #define PASS_THRU   "Y"
 
-#define FWVersion "*Kwikpay_100925_VER_1.24X Naico Ltd#"
+#define FWVersion "*Kwikpay_161225_VER_1.25x Naico Ltd#"
 
 
 

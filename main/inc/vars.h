@@ -51,6 +51,10 @@ char SIPuserName[100];
 char MIPdateTime[100];
 char MIPuserName[100];
 
+
+char MTdateTime[100];
+char MTuserName[100];
+
 char CAdateTime[100];
 char CAuserName[100];
 
@@ -222,3 +226,7 @@ bool UartDebugInfo=true;
 //030925
 int EnabledChannel[NUM_CHANNELS] = {1,1,1,1,1,1,1};
 int16_t chValue;
+
+
+// 161225
+int MaxKeyPressTime,MinKeyPressTime;
