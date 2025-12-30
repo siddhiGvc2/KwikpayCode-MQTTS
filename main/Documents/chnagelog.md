@@ -80,3 +80,13 @@ FW- *Kwikpay_040925_VER_1.24C Naico Ltd#
 -- network.disabled_auto_reconnect set true line removed
 -- called mqtt_app_start frm when wifi cnnected using FirstTryMqtt variable.
 -- mqtt_app_stop() function created & called before mqtt_app_start().
+
+## 1.25x
+-- add new command *MAXTIME:mintime:maxtime#
+
+## 1.25A
+-- when jumper inserted change LED blinking
+-- when jumper removed chnage led blinking to normal
+
+## 1.25B (Planned)
+-- when jumper inserted set wifi/tcp/mqtt to GVC options (SIP:3) (MIP:3) (SSID: GVCSYS1/2/3 PW:GVC3065V)

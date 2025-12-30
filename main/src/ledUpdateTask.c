@@ -89,6 +89,11 @@ void leds_update_task(){
             numberOfPulses = 20;
             LedInUse= 3;  
         }
+        else if (led_state == JUMPERINSERTED)
+        {
+            numberOfPulses = 5;
+            LedInUse= 3;  
+        }
         else if(led_state == SEARCH_FOR_WIFI1){
             numberOfPulses = 2;
             LedInUse= 1;            

@@ -252,6 +252,17 @@ void gpio_read_n_act(void)
             }
         }
 
+        if ((gpio_get_level(JUMPER2) == 0)  && (led_state != JUMPERINSERTED))
+        {
+            prev_state = led_state;
+            led_state = JUMPERINSERTED;
+
+        }   
+        else if (led_state == JUMPERINSERTED)
+        {
+            led_state = prev_state;
+        }
+
 
         if (gpio_get_level(JUMPER) == 0)
         {
