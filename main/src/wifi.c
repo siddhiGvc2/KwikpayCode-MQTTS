@@ -98,6 +98,8 @@ void event_handler(void* arg, esp_event_base_t event_base,
          if (gpio_get_level(JUMPER2) == 0)
          {
              set_led_state(WAIT4ESPTOUCH);
+             
+
              ESP_LOGI(TAG,"*Waiting for jumper to be removed#");
             if(UartDebugInfo)
                 uart_write_string_ln("*Waiting for jumper to be removed#");

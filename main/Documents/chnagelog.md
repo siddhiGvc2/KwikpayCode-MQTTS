@@ -89,4 +89,7 @@ FW- *Kwikpay_040925_VER_1.24C Naico Ltd#
 -- when jumper removed chnage led blinking to normal
 
 ## 1.25B (Planned)
--- when jumper inserted set wifi/tcp/mqtt to GVC options (SIP:3) (MIP:3) (SSID: GVCSYS1/2/3 PW:GVC3065V)
+-- when jumper (not ESPTOUCH but other pin) inserted set wifi/tcp/mqtt to GVC options (SIP:3) (MIP:3) (SSID: GVCSYS1/2/3 PW:GVC3065V)
+-- when JUMPER is LOW at powe om shift to GVC credentials
+-- remoevd JUMPER PORT code at NVS READ 
+-- ERASE Bug solved. This was erasing even when there is an error

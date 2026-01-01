@@ -105,6 +105,25 @@ void app_main(void)
     //     led_set_level(LEDG, 0);
     //     vTaskDelay(500/portTICK_PERIOD_MS);   
     // }
+
+    // if jumper found - set wifi as GVCSYS1/2/3 PW : GVC3065V
+    // TCP at GVC MQTT at GVC
+    // written by SIDDHI on 010126
+    if (gpio_get_level(JUMPER) == 0)
+    {
+        ESP_LOGI(TAG, "*USING GVC CREDENTIALS#");
+         strcpy(WIFI_SSID_1, "GVCSYS1");
+         strcpy(WIFI_SSID_2,"GVCSYS2");
+         strcpy(WIFI_SSID_3,"GVCSYS3");
+         strcpy(WIFI_PASS_1, "GVC3065V");
+         strcpy(WIFI_PASS_2, "GVC3065V");
+         strcpy(WIFI_PASS_3, "GVC3065V");
+         strcpy(mqtt_uri, MQTT_BROKER3);
+         strcpy(mqtt_user,mqtt_user3);
+         strcpy(mqtt_pass,mqtt_pass3);
+         strcpy(server_ip_addr, TCP_URL3);
+         server_port = TCP_PORT3;
+    }
     ESP_LOGI(TAG, "*Starting WiFi#");
     wifi_init_sta();
     ESP_LOGI(TAG, "*Testing RGB #");

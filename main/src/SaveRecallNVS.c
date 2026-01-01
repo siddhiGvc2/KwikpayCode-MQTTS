@@ -546,24 +546,24 @@ void load_settings_nvs(){
     }
 
 
-// if jumper set server address and server port as jumperPort
-//    if (gpio_get_level(JUMPER) == 0)
-#ifdef GVCOptionRequired
-      if (gpio_get_level(JUMPER) == 0)    // disable jumper sensing
-    {        
-        strcpy(server_ip_addr, DEFAULT_SERVER_IP_ADDR_TRY);
-        strcpy(FOTA_URL, DEFAULT_FOTA_URL_TRY);
-//        DEFAULT_FOTA_URL_TRY
-        ESP_LOGI(TAG, "***************************");
-        ESP_LOGI(TAG, "*JUMPER SENSED AT POWER ON#");
-        ESP_LOGI(TAG, "*Server IP ADDRESS is %s#",server_ip_addr);
-        if(utils_nvs_get_int(NVS_SERVER_PORT_KEY_JUMPER, &jumperPort) == ESP_OK){
-               ESP_LOGI(TAG, "*JUMPER Port is %d#",jumperPort);
-               server_port = jumperPort; 
-        }
+// // if jumper set server address and server port as jumperPort
+// //    if (gpio_get_level(JUMPER) == 0)
+// #ifdef GVCOptionRequired
+//       if (gpio_get_level(JUMPER) == 0)    // disable jumper sensing
+//     {        
+//         strcpy(server_ip_addr, DEFAULT_SERVER_IP_ADDR_TRY);
+//         strcpy(FOTA_URL, DEFAULT_FOTA_URL_TRY);
+// //        DEFAULT_FOTA_URL_TRY
+//         ESP_LOGI(TAG, "***************************");
+//         ESP_LOGI(TAG, "*JUMPER SENSED AT POWER ON#");
+//         ESP_LOGI(TAG, "*Server IP ADDRESS is %s#",server_ip_addr);
+//         if(utils_nvs_get_int(NVS_SERVER_PORT_KEY_JUMPER, &jumperPort) == ESP_OK){
+//                ESP_LOGI(TAG, "*JUMPER Port is %d#",jumperPort);
+//                server_port = jumperPort; 
+//         }
         
-    }
-#endif
+//     }
+// #endif
     if(utils_nvs_get_int(NVS_CASH1_KEY, &cashValue) == ESP_OK){
         CashTotals[0] = cashValue;
     }

@@ -958,11 +958,13 @@ void AnalyzeInputPkt(const char *rx_buffer,const char *InputVia)
                                             const char* errorMsg = "*Error: Missing or invalid parameters#";
                                             SendResponse(errorMsg,InputVia);
                                             uart_write_string_ln(errorMsg);
+                                            return;
                                         }
                                         else if (strcmp(tempBuf, SerialNumber) != 0) {
                                             sprintf (payload,"*Erase:Serial Not Matched Command:%s Actual:%s#",tempBuf,SerialNumber);
                                             SendResponse(payload,InputVia);
                                             uart_write_string_ln(payload);
+                                            return;
                                         }
 
                                         else{
@@ -979,6 +981,7 @@ void AnalyzeInputPkt(const char *rx_buffer,const char *InputVia)
                 // Send error message if parsing failed
                 const char* errorMsg = "*Error: Invalid format#";
                 SendResponse(errorMsg,InputVia);
+                return;
             }
         }
         else if(strcmp(InputVia, "UART") == 0)
@@ -989,6 +992,7 @@ void AnalyzeInputPkt(const char *rx_buffer,const char *InputVia)
                const char* errorMsg = "*Erase:Serial Not Matched#";
                // sendSocketData(sock, errorMsg, strlen(errorMsg), 0);
                SendResponse(errorMsg,InputVia);
+               return;
            }
            else{
           
