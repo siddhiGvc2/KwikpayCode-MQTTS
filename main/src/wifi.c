@@ -200,11 +200,12 @@ void event_handler(void* arg, esp_event_base_t event_base,
             if(UartDebugInfo)
                 uart_write_string_ln("MQTT STARTED");
                 // removed by VC on 150925
-            mqtt_app_stop(); //added on 120925
+            // mqtt_app_stop(); //added on 120925
+            mqtts_stop();
             if(FirstTryMQTT == 1)   // added on 120925
             {
-              
-                mqtt_app_start();  // connect to MQTT when IP received
+                mqtts_start();
+                // mqtt_app_start();  // connect to MQTT when IP received
             }
                 
         }

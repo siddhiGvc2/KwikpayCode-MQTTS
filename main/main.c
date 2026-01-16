@@ -134,7 +134,7 @@ void app_main(void)
     
     xTaskCreate(sendHBT, "sendHBT", 4096, NULL, 6, NULL);
     xTaskCreate(BlinkLED, "BlinkLED", 2048, NULL, 6, NULL);
-     InitMqtt(); // added on 120925
+    //  InitMqtt(); // added on 120925
     // removed on 10-05-25
     // xTaskCreate(RetryMqtt, "RetryMqtt", 2048, NULL, 6, NULL);
   

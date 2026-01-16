@@ -1,6 +1,7 @@
 dependencies:
   espressif/cmake_utilities:
-    component_hash: 351350613ceafba240b761b4ea991e0f231ac7a9f59a9ee901f751bddc0bb18f
+    component_hash: 
+      351350613ceafba240b761b4ea991e0f231ac7a9f59a9ee901f751bddc0bb18f
     dependencies:
     - name: idf
       require: private
@@ -10,7 +11,8 @@ dependencies:
       type: service
     version: 0.5.3
   espressif/esp_lcd_ili9341:
-    component_hash: c6b96c14fa22ab9b80251812f7dbd7dd1b255ccd68abb0cef97a276df711a4ec
+    component_hash: 
+      c6b96c14fa22ab9b80251812f7dbd7dd1b255ccd68abb0cef97a276df711a4ec
     dependencies:
     - name: idf
       require: private
@@ -26,7 +28,7 @@ dependencies:
   idf:
     source:
       type: idf
-    version: 5.2.3
+    version: 5.2.6
 direct_dependencies:
 - espressif/esp_lcd_ili9341
 - idf
