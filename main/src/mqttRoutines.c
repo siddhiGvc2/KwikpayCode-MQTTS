@@ -53,7 +53,9 @@ void InitMqtt (void);
 
  esp_mqtt_client_handle_t client = NULL;
  
-
+/* Embedded CA certificate */
+extern const uint8_t ca_cert_pem_start[] asm("_binary_ca_cert_pem_start");
+extern const uint8_t ca_cert_pem_end[]   asm("_binary_ca_cert_pem_end");
  
 void RetryMqtt(void)
 {
@@ -285,21 +287,22 @@ void mqtt_app_start(void)
     ESP_LOGI(TAG, "STARTING MQTT");
     if(UartDebugInfo)
       uart_write_string_ln("**********STARTING MQTT***********");
-    esp_mqtt_client_config_t mqttConfig = {
-         .broker.address.uri = mqtt_uri,
-         .task.stack_size = 1024*10, 
-        .session.protocol_ver = MQTT_PROTOCOL_V_3_1_1,
-        // .network.disable_auto_reconnect = false, // changed from false to true  on 120925
-        .credentials.username = mqtt_user,
-        .credentials.authentication.password = mqtt_pass,
-        .session.last_will.topic = "GVC/VM/00002",
-        .session.last_will.msg = "i will leave",
-        .session.last_will.msg_len = 12,
-        .session.last_will.qos = 1,
-        .session.last_will.retain = true,};
-    
-    client = esp_mqtt_client_init(&mqttConfig);
-    esp_mqtt_client_register_event(client, ESP_EVENT_ANY_ID, mqtt_event_handler, client);
+    esp_mqtt_client_config_t mqtt_cfg = {
+        .broker.address.uri = "mqtts://gvcsystems.com:8883",
+
+        .credentials = {
+            .username = "gvcsystems",
+            .authentication.password = "vkbd@070361M",
+        },
+
+        .broker.verification.certificate = (const char *)ca_cert_pem_start,
+    };
+
+    client = esp_mqtt_client_init(&mqtt_cfg);
+
+    esp_mqtt_client_register_event(
+        client, ESP_EVENT_ANY_ID, mqtt_event_handler, NULL);
+
     esp_mqtt_client_start(client);
    
    
